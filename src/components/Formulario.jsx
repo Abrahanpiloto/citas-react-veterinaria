@@ -1,15 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 function Formulario() {
-	const [nombre, setNombre] = useState("");
-	const [dueño, setDueño] = useState("");
-	const [email, setEmail] = useState("");
-	const [celular, SetCelular] = useState("");
-	const [fecha, setFecha] = useState("");
-	const [sintomas, setSintomas] = useState("");
+	const [nombre, setNombre] = useState('');
+	const [dueño, setDueño] = useState('');
+	const [email, setEmail] = useState('');
+	const [celular, SetCelular] = useState('');
+	const [fecha, setFecha] = useState('');
+	const [sintomas, setSintomas] = useState('');
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log('enviando....');
+	};
 
 	return (
-		<div className="md:w-1/2 lg:w-2/5 bg-white mb-10 rounded-md bg-opacity-90">
+		<div className="mx-5 md:w-1/2 lg:w-2/5 bg-white mb-10 rounded-md bg-opacity-90">
 			<h2 className="mt-10 mb-10 font-extrabold text-3xl text-center">
 				Seguimiento Pacientes
 			</h2>
@@ -17,7 +22,10 @@ function Formulario() {
 				<span className=" text-cyan-700 font-bold">Añade</span> Pacientes y
 				Administralos
 			</p>
-			<form className=" bg-opacity-50 shadow-lg rounded-lg  px-5">
+			<form
+				onSubmit={handleSubmit}
+				className="h-full shadow-lg rounded-lg px-5"
+			>
 				<div className="mb-5">
 					<label
 						htmlFor="mascota"
@@ -115,7 +123,7 @@ function Formulario() {
 				</div>
 				<input
 					type="submit"
-					className="font-bold p-2 transition-all bg-cyan-700 uppercase hover:bg-cyan-900 w-full text-white rounded-sm cursor-pointer"
+					className="mb-7 font-bold p-2 transition-all bg-cyan-700 uppercase hover:bg-cyan-900 w-full text-white rounded-sm cursor-pointer"
 					value="Agregar Paciente"
 				/>
 			</form>

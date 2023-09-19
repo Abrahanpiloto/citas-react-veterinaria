@@ -1,7 +1,7 @@
-import Pacientes from "./Pacientes";
+import Pacientes from './Pacientes';
 const ListadoPacientes = () => {
 	return (
-		<div className="md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll bg-white mb-10 rounded-md bg-opacity-90 ml-5">
+		<div className="mx-5 md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll bg-white mb-10 rounded-md bg-opacity-90 ml-5">
 			<h2 className="mt-10 mb-10 font-black text-center text-3xl">
 				Listado Pacientes
 			</h2>
