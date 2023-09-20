@@ -1,31 +1,71 @@
 import { useState, useEffect } from 'react';
+import Error from './Error';
 
-function Formulario() {
+function Formulario({ pacientes, setPacientes }) {
 	const [nombre, setNombre] = useState('');
 	const [dueño, setDueño] = useState('');
 	const [email, setEmail] = useState('');
-	const [celular, SetCelular] = useState('');
+	const [celular, setCelular] = useState('');
 	const [fecha, setFecha] = useState('');
 	const [sintomas, setSintomas] = useState('');
 
+	const [error, setError] = useState(false);
+
+	const generarId = () => {
+		const random = Math.random().toString(36).substr(2);
+		const fecha = Date.now().toString(36);
+
+		return random + fecha;
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log('enviando....');
+		//Validacion de formulario:
+		if ([nombre, dueño, email, celular, fecha, sintomas].includes('')) {
+			setError(true);
+			return;
+		}
+		setError(false);
+
+		//Objeto paciente:
+		const objetoPaciente = {
+			nombre,
+			dueño,
+			email,
+			celular,
+			fecha,
+			sintomas,
+			id: generarId(),
+		};
+
+		setPacientes([...pacientes, objetoPaciente]);
+		//nota: en este proyecto se necesita un objeto por cada paciente ingresado, para q un nuevo paciente no borre y reescriba el anterior se usa un spreed operator.
+
+		//Reinicia el form:
+		setNombre('');
+		setDueño('');
+		setEmail('');
+		setCelular('');
+		setFecha('');
+		setSintomas('');
 	};
 
 	return (
-		<div className="mx-5 md:w-1/2 lg:w-2/5 bg-white mb-10 rounded-md bg-opacity-90">
-			<h2 className="mt-10 mb-10 font-extrabold text-3xl text-center">
+		<div className="mx-5 md:w-1/2 lg:w-2/5 bg-white mb-10 rounded-lg  bg-opacity-90 ">
+			<h2 className="mt-10 mb-10 border-2 font-extrabold text-3xl text-center">
 				Seguimiento Pacientes
 			</h2>
 			<p className="text-lg mt-5 text-center mb-5">
 				<span className=" text-cyan-700 font-bold">Añade</span> Pacientes y
-				Administralos
+				Administralos.
 			</p>
 			<form
 				onSubmit={handleSubmit}
 				className="h-full shadow-lg rounded-lg px-5"
 			>
+				{/* aviso de alerta de campos vacios */}
+				{error && <Error />}
+
 				<div className="mb-5">
 					<label
 						htmlFor="mascota"
@@ -87,7 +127,7 @@ function Formulario() {
 						placeholder="numero contacto propietario"
 						className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
 						value={celular}
-						onChange={(e) => SetCelular(e.target.value)}
+						onChange={(e) => setCelular(e.target.value)}
 					/>
 				</div>
 				<div className="mb-5">
