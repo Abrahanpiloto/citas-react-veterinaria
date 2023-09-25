@@ -1,8 +1,12 @@
-import Paciente from './Paciente';
 
-const ListadoPacientes = ({ pacientes }) => {
+import Paciente from "./Paciente";
+
+const ListadoPacientes = ({ pacientes, setPaciente, eliminarPaciente }) => {
+	
+
+
 	return (
-		<div className="mx-5 md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll bg-white mb-10 rounded-md bg-opacity-90 ml-5">
+		<div className="mx-5 md:w-1/2 lg:w-3/5 overflow-y-scroll bg-white mb-10 rounded-2xl bg-opacity-90 ml-5">
 			{pacientes && pacientes.length ? (
 				<>
 					<h2 className="mt-10 mb-10 font-black text-center text-3xl">
@@ -14,7 +18,14 @@ const ListadoPacientes = ({ pacientes }) => {
 					</p>
 
 					{pacientes.map((paciente) => {
-						return <Paciente key={paciente.id} paciente={paciente} />;
+						return (
+							<Paciente
+								key={paciente.id}
+								paciente={paciente}
+								setPaciente={setPaciente}
+								eliminarPaciente={eliminarPaciente}
+							/>
+						);
 					})}
 				</>
 			) : (

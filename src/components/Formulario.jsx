@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Error from './Error';
 
-function Formulario({ pacientes, setPacientes }) {
+function Formulario({ pacientes, setPacientes, paciente, setPaciente }) {
 	const [nombre, setNombre] = useState('');
 	const [dueño, setDueño] = useState('');
 	const [email, setEmail] = useState('');
@@ -10,6 +10,18 @@ function Formulario({ pacientes, setPacientes }) {
 	const [sintomas, setSintomas] = useState('');
 
 	const [error, setError] = useState(false);
+
+	useEffect(() => {
+		if(Object.keys(paciente).length > 0) {
+			setNombre(paciente.nombre)
+			setDueño(paciente.dueño)
+			setEmail(paciente.email)
+			setCelular(paciente.celular)
+			setFecha(paciente.fecha)
+			setSintomas(paciente.sintomas)
+		}
+	}, [paciente]);
+	
 
 	const generarId = () => {
 		const random = Math.random().toString(36).substr(2);
@@ -20,6 +32,7 @@ function Formulario({ pacientes, setPacientes }) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
 		//Validacion de formulario:
 		if ([nombre, dueño, email, celular, fecha, sintomas].includes('')) {
 			setError(true);
@@ -35,11 +48,24 @@ function Formulario({ pacientes, setPacientes }) {
 			celular,
 			fecha,
 			sintomas,
-			id: generarId(),
+			
 		};
 
-		setPacientes([...pacientes, objetoPaciente]);
-		//nota: en este proyecto se necesita un objeto por cada paciente ingresado, para q un nuevo paciente no borre y reescriba el anterior se usa un spreed operator.
+		if(paciente.id) {
+			//editando el registro:
+			objetoPaciente.id = paciente.id;
+
+			const pacienteActualizados = pacientes.map( pacienteState => pacienteState.id === paciente.id ? objetoPaciente : pacienteState )
+			setPacientes(pacienteActualizados)
+			setPaciente({});
+			
+		} else {
+			//nuevo registro:
+			objetoPaciente.id = generarId();
+			
+			setPacientes([...pacientes, objetoPaciente]);
+			//nota: en este proyecto se necesita un objeto por cada paciente ingresado, para q un nuevo paciente no borre y reescriba el anterior se usa un spreed operator.
+		};
 
 		//Reinicia el form:
 		setNombre('');
@@ -51,8 +77,8 @@ function Formulario({ pacientes, setPacientes }) {
 	};
 
 	return (
-		<div className="mx-5 md:w-1/2 lg:w-2/5 bg-white mb-10 rounded-lg  bg-opacity-90 ">
-			<h2 className="mt-10 mb-10 border-2 font-extrabold text-3xl text-center">
+		<div className="mx-5 md:w-1/2 lg:w-2/5 bg-white rounded-2xl bg-opacity-90 mb-8">
+			<h2 className="pt-10 mb-10 font-extrabold text-3xl text-center">
 				Seguimiento Pacientes
 			</h2>
 			<p className="text-lg mt-5 text-center mb-5">
@@ -61,7 +87,7 @@ function Formulario({ pacientes, setPacientes }) {
 			</p>
 			<form
 				onSubmit={handleSubmit}
-				className="h-full shadow-lg rounded-lg px-5"
+				className=" shadow-lg  px-5"
 			>
 				{/* aviso de alerta de campos vacios */}
 				{error && <Error />}
@@ -163,8 +189,8 @@ function Formulario({ pacientes, setPacientes }) {
 				</div>
 				<input
 					type="submit"
-					className="mb-7 font-bold p-2 transition-all bg-cyan-700 uppercase hover:bg-cyan-900 w-full text-white rounded-sm cursor-pointer"
-					value="Agregar Paciente"
+					className=" font-bold p-2 transition-all bg-cyan-700 uppercase hover:bg-cyan-900 w-full text-white rounded-sm cursor-pointer mb-8"
+					value={paciente.id ? "Editar Paciente" : "Agregar Paciente"}
 				/>
 			</form>
 		</div>
