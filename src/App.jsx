@@ -8,6 +8,16 @@ function App() {
 
 	const [paciente, setPaciente] = useState({});
 
+	//Nota: no estaban persistiendo los pacientes en el LS motivado a que en el main.jsx estaba en <React.StrictMode></React.StrictMode> , se elimino eso y se sustituyo por un fragment <></>
+	useEffect(() => {
+		const obtenerLS = () => {
+			const pacientesLS = JSON.parse(localStorage.getItem("pacientes"))?? [];
+			setPacientes(pacientesLS)
+			console.log(pacientesLS)
+		}
+		obtenerLS();
+	}, [])
+
 	useEffect(() => {
 		localStorage.setItem("pacientes", JSON.stringify(pacientes));
 	}, [pacientes])
@@ -20,6 +30,7 @@ function App() {
 	
 
 	return (
+		
 		<div className="container mx-auto mt-20">
 			<Header />
 
